@@ -2,7 +2,7 @@ var Service, Characteristic;
 import {nordpool} from 'nordpool'
 import pollingtoevent from 'polling-to-event'
 
-module.exports = function (homebridge) {
+export function t(homebridge) {
    Service = homebridge.hap.Service;
    Characteristic = homebridge.hap.Characteristic;
    homebridge.registerAccessory("homebridge-nordpool", "Nordpool", Hb_Nordpool);
