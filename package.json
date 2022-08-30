@@ -1,18 +1,18 @@
 {
     "type": "module",
     "name": "homebridge-nordpool",
-    "version": "0.6.0",
-    "description": "Dummy switches for Homebridge: https://github.com/nfarina/homebridge",
+    "version": "0.1.0",
+    "description": "Dummy switches for Homebridge: https://github.com/ttopholm/homebridge-nordpool",
     "license": "ISC",
     "keywords": [
       "homebridge-plugin"
     ],
     "repository": {
       "type": "git",
-      "url": "git://github.com/nfarina/homebridge-dummy.git"
+      "url": "git://github.com/ttopholm/homebridge-nordpoolgit"
     },
     "bugs": {
-      "url": "http://github.com/nfarina/homebridge-dummy/issues"
+      "url": "http://github.com/ttopholm/homebridge-nordpool/issues"
     },
     "engines": {
       "node": ">=0.12.0",

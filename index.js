@@ -16,7 +16,7 @@ function Hb_Nordpool(log, config) {
 
    // url info
    this.name = config["name"];
-   this.manufacturer = config["manufacturer"] || "@lagunacomputer";
+   this.manufacturer = config["manufacturer"] || "@ttopholm";
    this.model = config["model"] || "Model not available";
    this.serial = config["serial"] || "Non-defined serial";
    this.VAT = config['VAT'] || 25;
