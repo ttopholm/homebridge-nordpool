@@ -19,7 +19,7 @@ function Hb_Nordpool(log, config) {
    this.manufacturer = config["manufacturer"] || "@lagunacomputer";
    this.model = config["model"] || "Model not available";
    this.serial = config["serial"] || "Non-defined serial";
-   this.VAT = config['VAT'] || 0.25;
+   this.VAT = config['VAT'] || 25;
    this.area = config['area'] || 'DK1'
    this.currency = config['currency'] || 'DKK'
    this._priceValue = 0;
@@ -31,7 +31,7 @@ function Hb_Nordpool(log, config) {
   }, {interval:60*1000, longpolling:true, longpollEventName:'NordPoolPoll'});
 
   emitter.on("NordPoolPoll", function(data) {
-    const price = Math.round(data.value * (1+that.VAT))
+    const price = Math.round(data.value * ((100+that.VAT)/100))
     that._priceValue = price
   });
 }
