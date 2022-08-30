@@ -9,6 +9,37 @@
                 "title": "Name",
                 "type": "string",
                 "required": true
+            },
+            "VAT": {
+                "title": "VAT",
+                "type": "integer",
+                "default": 25
+            },
+            "area": {
+                "title": "Area",
+                "type": "string"
+            },
+            "currency": {
+                "title": "Area",
+                "type": "string",
+                "oneOf": [
+                    {
+                        "title": "DKK",
+                        "enum": ["DKK"]
+                    },
+                    {
+                        "title": "SEK",
+                        "enum": ["SEK"]
+                    }  ,
+                    {
+                        "title": "NOK",
+                        "enum": ["NOK"]
+                    },
+                    {
+                        "title": "EUR",
+                        "enum": ["EUR"]
+                    }         
+                ]
             }
         }
     }
