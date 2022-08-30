@@ -2,6 +2,8 @@ var Service, Characteristic;
 import {nordpool} from 'nordpool'
 import pollingtoevent from 'polling-to-event'
 
+const prices = new nordpool.Prices()
+
 export default (homebridge) => {
    Service = homebridge.hap.Service;
    Characteristic = homebridge.hap.Characteristic;
