@@ -5,7 +5,7 @@ import pollingtoevent from 'polling-to-event'
 module.exports = function (homebridge) {
    Service = homebridge.hap.Service;
    Characteristic = homebridge.hap.Characteristic;
-   homebridge.registerAccessory("homebridge-nordpool", "Light", hb_Nordpool);
+   homebridge.registerAccessory("homebridge-nordpool", "Nordpool", hb_Nordpool);
 }
 
 
@@ -33,33 +33,22 @@ function hb_Nordpool(log, config) {
     that._priceValue = price
   });
 
+  this.informationService = new Service.AccessoryInformation();
+  this.informationService
+  .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+  .setCharacteristic(Characteristic.Model, this.model)
+  .setCharacteristic(Characteristic.SerialNumber, this.serial);
+
+  this.temperatureService = new Service.LightSensor(this.name);
+  this.temperatureService
+     .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
+     .on('get', this.getState.bind(this));
+
+
 }
 
 hb_Nordpool.prototype = {
-
-
-
    getState: function (callback) {
      callback(null, this._priceValue);
-   },
-
-   identify: function (callback) {
-      this.log("Identify requested!");
-      callback(); // success
-   },
-
-   getServices: function () {
-      this.informationService = new Service.AccessoryInformation();
-      this.informationService
-      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
-      .setCharacteristic(Characteristic.Model, this.model)
-      .setCharacteristic(Characteristic.SerialNumber, this.serial);
-
-      this.temperatureService = new Service.LightSensor(this.name);
-      this.temperatureService
-         .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
-         .on('get', this.getState.bind(this));
-
-      return [this.informationService, this.temperatureService];
    }
 };
