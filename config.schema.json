@@ -22,6 +22,7 @@
             "currency": {
                 "title": "Area",
                 "type": "string",
+                "default": "DKK",
                 "oneOf": [
                     {
                         "title": "DKK",
