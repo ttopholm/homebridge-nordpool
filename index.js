@@ -31,7 +31,7 @@ function Hb_Nordpool(log, config) {
   }, {interval:60*1000, longpolling:true, longpollEventName:'NordPoolPoll'});
 
   emitter.on("NordPoolPoll", function(data) {
-    const price = Math.round(data.value * (1+that.VAT)/1000)
+    const price = Math.round(data.value * (1+that.VAT))
     that._priceValue = price
   });
 }
