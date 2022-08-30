@@ -5,11 +5,11 @@ import pollingtoevent from 'polling-to-event'
 module.exports = function (homebridge) {
    Service = homebridge.hap.Service;
    Characteristic = homebridge.hap.Characteristic;
-   homebridge.registerAccessory("homebridge-nordpool", "Nordpool", hb_Nordpool);
+   homebridge.registerAccessory("homebridge-nordpool", "Nordpool", Hb_Nordpool);
 }
 
 
-function hb_Nordpool(log, config) {
+function Hb_Nordpool(log, config) {
    this.log = log;
 
    // url info
