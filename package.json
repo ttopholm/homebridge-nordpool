@@ -1,6 +1,7 @@
 
 
 {
+    "type": "module",
     "name": "homebridge-nordpool",
     "version": "0.6.0",
     "description": "Dummy switches for Homebridge: https://github.com/nfarina/homebridge",
