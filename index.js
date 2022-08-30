@@ -47,7 +47,7 @@ function Hb_Nordpool(log, config) {
 
 }
 
-hb_Nordpool.prototype = {
+Hb_Nordpool.prototype = {
    getState: function (callback) {
      callback(null, this._priceValue);
    }
