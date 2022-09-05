@@ -30,7 +30,7 @@ function Hb_Nordpool(log, config) {
    //Get the price first
    this.getPriceNow()
 
-   const hourlyJob = schedule('0/2 * * * * ', () => {
+   const hourlyJob = schedule('*/2 * * * * ', () => {
       this.getPriceNow()
    })
 }
@@ -47,6 +47,7 @@ Hb_Nordpool.prototype = {
       prices.at({area:this.area, currency: this.currency}).then( data => {
          const price = Math.round(data.value * ((100+this.VAT)/100))
          this._currentPrice = price
+         console.log(price)
          this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
       })
    },
