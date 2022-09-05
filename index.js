@@ -85,7 +85,7 @@ Hb_Nordpool.prototype = {
          .on('get', this.getCurrentPrice.bind(this));
 
 
-         this.occupancyServiceLow = new Service.OccupancySensor(this.name);
+         this.occupancyServiceLow = new Service.OccupancySensor("demo_low");
          /*this.occupancyServiceLow.addCharacteristic(Characteristic.TimeoutDelay);
          //this.occupancyServiceLow.setCharacteristic(Characteristic.TimeoutDelay, 3600);
          this.occupancyServiceLow.getCharacteristic(Characteristic.TimeoutDelay).on('change', (event) => {
