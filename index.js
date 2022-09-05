@@ -88,7 +88,7 @@ Hb_Nordpool.prototype = {
       this.occupancyServiceLow = new Service.OccupancySensor(this.name + "_lowPrice");
       this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
-      this.occupancyServiceHigh = new Service.OccupancySensor(this.name + "_lowPrice");
+      this.occupancyServiceHigh = new Service.OccupancySensor(this.name + "_highPrice");
       this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
 
