@@ -28,7 +28,7 @@ function Hb_Nordpool(log, config) {
    
    //Get the price first
    this.getCurrentPrice();
-   //this.getDailyPrices();
+   this.getDailyPrices();
 
    const hourlyJob = schedule('0 * * * * ', () => {
       this.getCurrentPrice()
@@ -43,10 +43,10 @@ function Hb_Nordpool(log, config) {
          this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
       }
    });
-   /*
+   
    const dailyJob = schedule('0 0 * * *', () => {
       this.getDailyPrices()
-   });*/
+   });
 
 }
 
