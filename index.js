@@ -23,16 +23,31 @@ function Hb_Nordpool(log, config) {
    this.area = config['area'] || 'DK1'
    this.currency = config['currency'] || 'DKK'
    this._currentPrice = 0;
-   this._maxPricePerHour = 0;
-   this._minPricePerHour = 0;
-   
+   this._maxHourPrice = 0;
+   this._minHourPrice = 0;
    
    //Get the price first
-   this.getPriceNow()
+   this.getCurrentPrice();
+   this.getDailyPrices();
 
-   const hourlyJob = schedule('0 * * * * ', () => {
-      this.getPriceNow()
-   })
+   const currentJob = schedule('0 * * * * ', () => {
+      this.getCurrentPrice()
+   });
+
+   const dailyJob = schedule('0 0 * * *', () => {
+      this.getDailyPrices()
+   });
+
+   const hourlyJob = schedule('0 * * * *',() => {
+      currentHour = new Date().getHours()
+
+
+      if (currentHour == this._minHourPrice) {
+
+      } else if (currentHour == this._maxHourPrice) {
+
+      }
+   });
 }
 
 Hb_Nordpool.prototype = {
@@ -43,7 +58,14 @@ Hb_Nordpool.prototype = {
       this.log("Identify requested!");
       callback(); // success
    },
-   getPriceNow: function() {
+   getDailyPrices: function() {
+      prices.hourly({area:'DK2', currency:'DKK', date: Date.now()}).then(results => {
+         results.sort(function(a,b) {return a.value - b.value})
+         this._maxHourPrice = new Date(results.at(-1).date).getHours()
+         this._minHourPrice = new Date(results.at(0).date).getHours()
+      })     
+   },
+   getCurrentPrice: function() {
       prices.at({area:this.area, currency: this.currency}).then( data => {
          const price = Math.round(data.value * ((100+this.VAT)/100))
          this._currentPrice = price
@@ -62,6 +84,18 @@ Hb_Nordpool.prototype = {
          .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
          .on('get', this.getCurrentPrice.bind(this));
 
-      return [this.informationService, this.lightSensorService];
+
+         this.occupancyServiceLow = new Service.OccupancySensor(this.name);
+         /*this.occupancyServiceLow.addCharacteristic(Characteristic.TimeoutDelay);
+         //this.occupancyServiceLow.setCharacteristic(Characteristic.TimeoutDelay, 3600);
+         this.occupancyServiceLow.getCharacteristic(Characteristic.TimeoutDelay).on('change', (event) => {
+           this.log('Setting delay to:', event.newValue);
+         });
+     
+         this.occupancyServiceLow.addCharacteristic(Characteristic.TimeRemaining);
+         this.occupancyServiceLow.setCharacteristic(Characteristic.TimeRemaining, 0);*/
+         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+
+      return [this.informationService, this.lightSensorService, this.occupancyServiceLow];
    }
 };
