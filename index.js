@@ -42,7 +42,7 @@ Hb_Nordpool.prototype = {
       callback(); // success
    },
    getPriceNow: function() {
-      prices.at({area:this.area, currency: this.currency}).then( results => {
+      prices.at({area:this.area, currency: this.currency}).then( data => {
          const price = Math.round(data.value * ((100+this.VAT)/100))
          this._currentPrice = price
          this.homebridgeService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
