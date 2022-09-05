@@ -92,6 +92,6 @@ Hb_Nordpool.prototype = {
       this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
 
-      return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
+      return [this.informationService, this.lightSensorService, this.occupancyServiceLow];
    }
 };
