@@ -81,7 +81,7 @@ Hb_Nordpool.prototype = {
          .on('get', this.getPrice.bind(this));
 
 
-         //this.occupancyServiceLow = new Service.OccupancySensor("demo_low");
+         this.occupancyServiceLow = new Service.OccupancySensor(this.name + "_lowPrice");
          /*this.occupancyServiceLow.addCharacteristic(Characteristic.TimeoutDelay);
          //this.occupancyServiceLow.setCharacteristic(Characteristic.TimeoutDelay, 3600);
          this.occupancyServiceLow.getCharacteristic(Characteristic.TimeoutDelay).on('change', (event) => {
@@ -90,7 +90,7 @@ Hb_Nordpool.prototype = {
      
          this.occupancyServiceLow.addCharacteristic(Characteristic.TimeRemaining);
          this.occupancyServiceLow.setCharacteristic(Characteristic.TimeRemaining, 0);*/
-         //this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
 
       return [this.informationService, this.lightSensorService];
    }
