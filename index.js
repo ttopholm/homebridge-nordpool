@@ -30,24 +30,20 @@ function Hb_Nordpool(log, config) {
    this.getCurrentPrice();
    this.getDailyPrices();
 
-   const currentJob = schedule('0 * * * * ', () => {
+   const hourlyJob = schedule('0 * * * * ', () => {
       this.getCurrentPrice()
+      currentHour = new Date().getHours()
+      if (currentHour == this._minHourPrice) {
+         this.log('min price')
+      } else if (currentHour == this._maxHourPrice) {
+         this.log('max price')
+      }
    });
 
    const dailyJob = schedule('0 0 * * *', () => {
       this.getDailyPrices()
    });
 
-   const hourlyJob = schedule('0 * * * *',() => {
-      currentHour = new Date().getHours()
-
-
-      if (currentHour == this._minHourPrice) {
-
-      } else if (currentHour == this._maxHourPrice) {
-
-      }
-   });
 }
 
 Hb_Nordpool.prototype = {
@@ -85,7 +81,7 @@ Hb_Nordpool.prototype = {
          .on('get', this.getCurrentPrice.bind(this));
 
 
-         this.occupancyServiceLow = new Service.OccupancySensor("demo_low");
+         //this.occupancyServiceLow = new Service.OccupancySensor("demo_low");
          /*this.occupancyServiceLow.addCharacteristic(Characteristic.TimeoutDelay);
          //this.occupancyServiceLow.setCharacteristic(Characteristic.TimeoutDelay, 3600);
          this.occupancyServiceLow.getCharacteristic(Characteristic.TimeoutDelay).on('change', (event) => {
@@ -94,7 +90,7 @@ Hb_Nordpool.prototype = {
      
          this.occupancyServiceLow.addCharacteristic(Characteristic.TimeRemaining);
          this.occupancyServiceLow.setCharacteristic(Characteristic.TimeRemaining, 0);*/
-         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+         //this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
 
       return [this.informationService, this.lightSensorService];
    }
