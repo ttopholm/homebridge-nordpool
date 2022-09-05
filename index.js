@@ -25,7 +25,8 @@ function Hb_Nordpool(log, config) {
    this._currentPrice = 0;
    this._maxPricePerHour = 0;
    this._minPricePerHour = 0;
-   that = this
+   
+   var that = this;
    
    //Get the price first
    this.getPriceNow()
