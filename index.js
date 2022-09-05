@@ -33,10 +33,14 @@ function Hb_Nordpool(log, config) {
    const hourlyJob = schedule('0 * * * * ', () => {
       this.getCurrentPrice()
       currentHour = new Date().getHours()
+      this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+      this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+
+
       if (currentHour == this._minHourPrice) {
-         this.log('min price')
+         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
       } else if (currentHour == this._maxHourPrice) {
-         this.log('max price')
+         this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
       }
    });
    /*
@@ -81,17 +85,13 @@ Hb_Nordpool.prototype = {
          .on('get', this.getPrice.bind(this));
 
 
-         this.occupancyServiceLow = new Service.OccupancySensor(this.name + "_lowPrice");
-         /*this.occupancyServiceLow.addCharacteristic(Characteristic.TimeoutDelay);
-         //this.occupancyServiceLow.setCharacteristic(Characteristic.TimeoutDelay, 3600);
-         this.occupancyServiceLow.getCharacteristic(Characteristic.TimeoutDelay).on('change', (event) => {
-           this.log('Setting delay to:', event.newValue);
-         });
-     
-         this.occupancyServiceLow.addCharacteristic(Characteristic.TimeRemaining);
-         this.occupancyServiceLow.setCharacteristic(Characteristic.TimeRemaining, 0);*/
-         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+      this.occupancyServiceLow = new Service.OccupancySensor(this.name + "_lowPrice");
+      this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
-      return [this.informationService, this.lightSensorService, this.occupancyServiceLow];
+      this.occupancyServiceHigh = new Service.OccupancySensor(this.name + "_lowPrice");
+      this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+
+
+      return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
    }
 };
