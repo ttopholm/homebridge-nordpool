@@ -84,7 +84,7 @@ Hb_Nordpool.prototype = {
          .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
          .on('get', this.getPrice.bind(this));
 
-
+      
       this.occupancyServiceLow = new Service.OccupancySensor(this.name + "_lowPrice");
       this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
@@ -92,6 +92,6 @@ Hb_Nordpool.prototype = {
       this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
 
-      return [this.informationService, this.lightSensorService, this.occupancyServiceLow];
+      return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
    }
 };
