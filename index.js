@@ -36,6 +36,7 @@ function Hb_Nordpool(log, config) {
       this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
       this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
+      this.log(currentHour + ", " + this._maxHourPrice + ", " + this._minHourPrice)
 
       if (currentHour == this._minHourPrice) {
          this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
@@ -63,6 +64,8 @@ Hb_Nordpool.prototype = {
          results.sort(function(a,b) {return a.value - b.value})
          this._maxHourPrice = new Date(results.at(-1).date).getHours()
          this._minHourPrice = new Date(results.at(0).date).getHours()
+         this.log(this._maxHourPrice + ", " + this._minHourPrice)
+
       })     
    },
    getCurrentPrice: function() {
