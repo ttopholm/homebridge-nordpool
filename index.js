@@ -47,7 +47,7 @@ function Hb_Nordpool(log, config) {
 }
 
 Hb_Nordpool.prototype = {
-   getCurrentPrice: function (callback) {
+   getPrice: function (callback) {
      callback(null, this._currentPrice);
    },
    identify: function (callback) {
@@ -78,7 +78,7 @@ Hb_Nordpool.prototype = {
       this.lightSensorService = new Service.LightSensor(this.name);
       this.lightSensorService
          .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
-         .on('get', this.getCurrentPrice.bind(this));
+         .on('get', this.getPrice.bind(this));
 
 
          //this.occupancyServiceLow = new Service.OccupancySensor("demo_low");
