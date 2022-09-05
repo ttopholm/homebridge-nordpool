@@ -32,17 +32,7 @@ function Hb_Nordpool(log, config) {
 
    const hourlyJob = schedule('0 * * * * ', () => {
       this.getCurrentPrice()
-      currentHour = new Date().getHours()
-      this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-      this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
 
-      this.log(currentHour + ", " + this._maxHourPrice + ", " + this._minHourPrice)
-
-      if (currentHour == this._minHourPrice) {
-         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
-      } else if (currentHour == this._maxHourPrice) {
-         this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
-      }
    });
    
    const dailyJob = schedule('0 0 * * *', () => {
@@ -73,6 +63,18 @@ Hb_Nordpool.prototype = {
          const price = Math.round(data.value * ((100+this.VAT)/100))
          this._currentPrice = price
          this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+         
+         let currentHour = new Date().getHours()
+         this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+         this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+   
+         this.log(currentHour + ", " + this._maxHourPrice + ", " + this._minHourPrice)
+   
+         if (currentHour == this._minHourPrice) {
+            this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+         } else if (currentHour == this._maxHourPrice) {
+            this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+         }
       })
    },
    getServices: function () {
