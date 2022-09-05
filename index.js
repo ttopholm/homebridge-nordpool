@@ -23,13 +23,13 @@ function Hb_Nordpool(log, config) {
    this.area = config['area'] || 'DK1'
    this.currency = config['currency'] || 'DKK'
    this._currentPrice = 0;
-
+   that = this
    
    //Get the price first
    this.getPriceNow()
 
    const hourlyJob = scheduleJob('0 * * * * ', function() {
-      this.getPriceNow()
+      that.getPriceNow()
    })
 }
 
