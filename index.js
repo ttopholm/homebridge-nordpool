@@ -26,9 +26,10 @@ function Hb_Nordpool(log, config) {
    this._maxHourPrice = 0;
    this._minHourPrice = 0;
    
-   //Get the price first
-   this.getCurrentPrice();
+   //Get the prices first
    this.getDailyPrices();
+   this.getCurrentPrice();
+   
 
    const hourlyJob = schedule('0 * * * * ', () => {
       this.getCurrentPrice()
