@@ -28,7 +28,7 @@ function Hb_Nordpool(log, config) {
    
    //Get the price first
    this.getCurrentPrice();
-   this.getDailyPrices();
+   //this.getDailyPrices();
 
    const hourlyJob = schedule('0 * * * * ', () => {
       this.getCurrentPrice()
@@ -39,10 +39,10 @@ function Hb_Nordpool(log, config) {
          this.log('max price')
       }
    });
-
+   /*
    const dailyJob = schedule('0 0 * * *', () => {
       this.getDailyPrices()
-   });
+   });*/
 
 }
 
@@ -55,7 +55,7 @@ Hb_Nordpool.prototype = {
       callback(); // success
    },
    getDailyPrices: function() {
-      prices.hourly({area:'DK2', currency:'DKK', date: Date.now()}).then(results => {
+      prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
          results.sort(function(a,b) {return a.value - b.value})
          this._maxHourPrice = new Date(results.at(-1).date).getHours()
          this._minHourPrice = new Date(results.at(0).date).getHours()
