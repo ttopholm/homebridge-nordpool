@@ -1,6 +1,6 @@
 var Service, Characteristic;
 import {nordpool} from 'nordpool'
-import {scheduleJob} from 'node-schedule'
+import {schedule} from 'node-cron'
 
 const prices = new nordpool.Prices()
 
@@ -26,13 +26,12 @@ function Hb_Nordpool(log, config) {
    this._maxPricePerHour = 0;
    this._minPricePerHour = 0;
    
-   var that = this;
    
    //Get the price first
    this.getPriceNow()
 
-   const hourlyJob = scheduleJob('0 * * * * ', function() {
-      that.getPriceNow()
+   const hourlyJob = schedule('0/2 * * * * ', () => {
+      this.getPriceNow()
    })
 }
 

@@ -20,6 +20,6 @@
     },
     "dependencies": {
         "nordpool": "^4.0.0",
-        "node-schedule": "^2.1.0"
+        "node-cron": "^3.0.2"
     }
   }
