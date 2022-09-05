@@ -71,8 +71,10 @@ Hb_Nordpool.prototype = {
          this.log(currentHour + ", " + this._maxHourPrice + ", " + this._minHourPrice)
    
          if (currentHour == this._minHourPrice) {
+            this.log('rammer vi her')
             this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
          } else if (currentHour == this._maxHourPrice) {
+            this.log('rammer vi her1')
             this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
          }
       })
