@@ -1,6 +1,6 @@
 var Service, Characteristic;
 import {nordpool} from 'nordpool'
-import pollingtoevent from 'polling-to-event'
+import {scheduleJob} from 'node-schedule'
 
 const prices = new nordpool.Prices()
 
@@ -22,27 +22,31 @@ function Hb_Nordpool(log, config) {
    this.VAT = config['VAT'] || 25;
    this.area = config['area'] || 'DK1'
    this.currency = config['currency'] || 'DKK'
-   this._priceValue = 0;
-   var that = this;
-   var emitter = pollingtoevent(function(done) {
-    const item = prices.at({area:that.area, currency: that.currency}).then( 
-      item => done(null, item)
-    )
-  }, {interval:60*1000, longpolling:true, longpollEventName:'NordPoolPoll'});
+   this._currentPrice = 0;
 
-  emitter.on("NordPoolPoll", function(data) {
-    const price = Math.round(data.value * ((100+that.VAT)/100))
-    that._priceValue = price
-  });
+   
+   //Get the price first
+   this.getPriceNow()
+
+   const hourlyJob = scheduleJob('0 * * * * ', function() {
+      this.getPriceNow()
+   })
 }
 
 Hb_Nordpool.prototype = {
-   getState: function (callback) {
-     callback(null, this._priceValue);
+   getCurrentPrice: function (callback) {
+     callback(null, this._currentPrice);
    },
    identify: function (callback) {
       this.log("Identify requested!");
       callback(); // success
+   },
+   getPriceNow: function() {
+      prices.at({area:this.area, currency: this.currency}).then( results => {
+         const price = Math.round(data.value * ((100+this.VAT)/100))
+         this._currentPrice = price
+         this.homebridgeService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+      })
    },
 
    getServices: function () {
