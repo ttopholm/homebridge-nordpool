@@ -45,7 +45,7 @@ Hb_Nordpool.prototype = {
       prices.at({area:this.area, currency: this.currency}).then( data => {
          const price = Math.round(data.value * ((100+this.VAT)/100))
          this._currentPrice = price
-         this.homebridgeService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+         this.temperatureService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
       })
    },
    getServices: function () {
