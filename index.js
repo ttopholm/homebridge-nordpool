@@ -48,7 +48,6 @@ Hb_Nordpool.prototype = {
          this.homebridgeService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
       })
    },
-
    getServices: function () {
       this.informationService = new Service.AccessoryInformation();
       this.informationService
@@ -59,7 +58,7 @@ Hb_Nordpool.prototype = {
       this.temperatureService = new Service.LightSensor(this.name);
       this.temperatureService
          .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
-         .on('get', this.getState.bind(this));
+         .on('get', this.getCurrentPrice.bind(this));
 
       return [this.informationService, this.temperatureService];
    }
