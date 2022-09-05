@@ -23,6 +23,8 @@ function Hb_Nordpool(log, config) {
    this.area = config['area'] || 'DK1'
    this.currency = config['currency'] || 'DKK'
    this._currentPrice = 0;
+   this._maxPricePerHour = 0;
+   this._minPricePerHour = 0;
    that = this
    
    //Get the price first
@@ -45,7 +47,7 @@ Hb_Nordpool.prototype = {
       prices.at({area:this.area, currency: this.currency}).then( data => {
          const price = Math.round(data.value * ((100+this.VAT)/100))
          this._currentPrice = price
-         this.temperatureService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+         this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
       })
    },
    getServices: function () {
@@ -55,11 +57,11 @@ Hb_Nordpool.prototype = {
       .setCharacteristic(Characteristic.Model, this.model)
       .setCharacteristic(Characteristic.SerialNumber, this.serial);
 
-      this.temperatureService = new Service.LightSensor(this.name);
-      this.temperatureService
+      this.lightSensorService = new Service.LightSensor(this.name);
+      this.lightSensorService
          .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
          .on('get', this.getCurrentPrice.bind(this));
 
-      return [this.informationService, this.temperatureService];
+      return [this.informationService, this.lightSensorService];
    }
 };
