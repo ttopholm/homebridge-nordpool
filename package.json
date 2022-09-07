@@ -1,25 +1,32 @@
 {
-    "type": "module",
-    "name": "homebridge-nordpool",
-    "version": "0.1.0",
-    "description": "Dummy switches for Homebridge: https://github.com/ttopholm/homebridge-nordpool",
-    "license": "ISC",
-    "keywords": [
-      "homebridge-plugin"
-    ],
-    "repository": {
-      "type": "git",
-      "url": "git://github.com/ttopholm/homebridge-nordpoolgit"
-    },
-    "bugs": {
-      "url": "http://github.com/ttopholm/homebridge-nordpool/issues"
-    },
-    "engines": {
-      "node": ">=0.12.0",
-      "homebridge": ">=0.2.0"
-    },
-    "dependencies": {
-        "nordpool": "^4.0.0",
-        "node-cron": "^3.0.2"
-    }
-  }
+  "type": "module",
+  "name": "homebridge-nordpool",
+  "version": "1.0.0",
+  "description": "Nordpool plugin for homebridge: https://github.com/ttopholm/homebridge-nordpool",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ttopholm/homebridge-nordpoolgit.git"
+  },
+  "bugs": {
+    "url": "http://github.com/ttopholm/homebridge-nordpool/issues"
+  },
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "dependencies": {
+    "nordpool": "^4.0.0",
+    "node-cron": "^3.0.2"
+  },
+  "homepage": "https://github.com/ttopholm/homebridge-nordpoolgit#readme",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tue Topholm"
+}
