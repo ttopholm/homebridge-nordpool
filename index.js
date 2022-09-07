@@ -48,18 +48,7 @@ Hb_Nordpool.prototype = {
    getPrice: function (callback) {
      callback(null, this._currentPrice);
    },
-   identify: function (callback) {
-      this.log("Identify requested!");
-      callback(); // success
-   },
-   getDailyPrices: function() {
-      prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
-         results.sort(function(a,b) {return a.value - b.value})
-         this._maxHourPrice = new Date(results.at(-1).date).getHours()
-         this._minHourPrice = new Date(results.at(0).date).getHours()
-      })     
-   },
-   getOccupancyState: function() {
+   getOccupancyState: function(callback) {
       const currentHour = new Date().getHours()
 
       if (currentHour == this._minHourPrice) {
@@ -71,6 +60,17 @@ Hb_Nordpool.prototype = {
       } else {
          callback(null, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
       }
+   },
+   identify: function (callback) {
+      this.log("Identify requested!");
+      callback(); // success
+   },
+   getDailyPrices: function() {
+      prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
+         results.sort(function(a,b) {return a.value - b.value})
+         this._maxHourPrice = new Date(results.at(-1).date).getHours()
+         this._minHourPrice = new Date(results.at(0).date).getHours()
+      })     
    },
    getCurrentPrice: function() {
       prices.at({area:this.area, currency: this.currency}).then( data => {
