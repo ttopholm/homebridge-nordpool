@@ -52,17 +52,17 @@ Hb_Nordpool.prototype = {
       const currentHour = new Date().getHours()
 
       if (currentHour == this._minHourPrice) {
-         callback(null, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+         return Characteristic.OccupancyDetected.OCCUPANCY_DETECTED;
       }
-      callback(null, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+      return Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED;
    },
    getOccupancyHighState: function(callback) {
       const currentHour = new Date().getHours()
 
       if (currentHour == this._maxHourPrice) {
-         callback(null, Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+         return Characteristic.OccupancyDetected.OCCUPANCY_DETECTED;
       }
-      callback(null, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+      return Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED;
    },
    identify: function (callback) {
       this.log("Identify requested!");
@@ -112,13 +112,13 @@ Hb_Nordpool.prototype = {
       this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
       this.occupancyServiceLow
         .getCharacteristic(Characteristic.OccupancyDetected)
-        .on('get', this.getOccupancyLowState.bind(this));
+        .onGet(this.getOccupancyLowState.bind(this));
 
       this.occupancyServiceHigh = new Service.OccupancySensor(this.name + "_highPrice", this.name + "_highPrice");
       this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
       this.occupancyServiceHigh
         .getCharacteristic(Characteristic.OccupancyDetected)
-        .on('get', this.getOccupancyHighState.bind(this));
+        .onGet(this.getOccupancyHighState.bind(this));
 
       return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
    }
