@@ -110,16 +110,16 @@ Hb_Nordpool.prototype = {
       
       this.occupancyServiceLow = new Service.OccupancySensor(this.name + "_lowPrice", this.name + "_lowPrice");
       this.occupancyServiceLow.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-      this.occupancyServiceLow
+      /*this.occupancyServiceLow
         .getCharacteristic(Characteristic.OccupancyDetected)
-        .onGet(this.getOccupancyLowState.bind(this));
+        .onGet(this.getOccupancyLowState.bind(this));*/
 
       this.occupancyServiceHigh = new Service.OccupancySensor(this.name + "_highPrice", this.name + "_highPrice");
       this.occupancyServiceHigh.setCharacteristic(Characteristic.OccupancyDetected, Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-      this.occupancyServiceHigh
+      /*this.occupancyServiceHigh
         .getCharacteristic(Characteristic.OccupancyDetected)
         .onGet(this.getOccupancyHighState.bind(this));
-
+      */
       return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
    }
 };
