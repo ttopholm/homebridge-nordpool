@@ -81,16 +81,18 @@ Hb_Nordpool.prototype = {
    getCurrentPrice: function() {
       const price = this._day_prices[new Date().getHours()]
       this._currentPrice = price
-      this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+      if (this.lightSensorService) {
+         this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+      }
       
       const currentHour = new Date().getHours()
 
 
-      if (currentHour == this._minHourPrice) {
+      if (currentHour == this._minHourPrice && this.occupancyServiceLow && this.occupancyServiceHigh) {
          this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
          this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
          this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
-      } else if (currentHour == this._maxHourPrice) {
+      } else if (currentHour == this._maxHourPrice && this.occupancyServiceLow && this.occupancyServiceHigh) {
          this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
          this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
          this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
