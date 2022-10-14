@@ -25,6 +25,7 @@ function Hb_Nordpool(log, config) {
    this._currentPrice = 0;
    this._maxHourPrice = 0;
    this._minHourPrice = 0;
+   this._day_prices = [];
    
    //Get the prices first
    this.getDailyPrices(Date.now());
@@ -71,29 +72,29 @@ Hb_Nordpool.prototype = {
    getDailyPrices: function() {
       prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
          results.sort(function(a,b) {return a.value - b.value})
+         this._day_prices = [];
+         results.forEach(data => this._day_prices.push(Math.round(data.value * ((100+this.VAT)/100))))
          this._maxHourPrice = new Date(results.at(-1).date).getHours()
          this._minHourPrice = new Date(results.at(0).date).getHours()
       })     
    },
    getCurrentPrice: function() {
-      prices.at({area:this.area, currency: this.currency}).then( data => {
-         const price = Math.round(data.value * ((100+this.VAT)/100))
-         this._currentPrice = price
-         this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
-         
-         const currentHour = new Date().getHours()
+      const price = this._day_prices[new Date().getHours()]
+      this._currentPrice = price
+      this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
+      
+      const currentHour = new Date().getHours()
 
-   
-         if (currentHour == this._minHourPrice) {
-            this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-            this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-            this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
-         } else if (currentHour == this._maxHourPrice) {
-            this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-            this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
-            this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
-         }
-      })
+
+      if (currentHour == this._minHourPrice) {
+         this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+         this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+         this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+      } else if (currentHour == this._maxHourPrice) {
+         this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+         this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
+         this.occupancyServiceHigh.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_DETECTED);
+      }
    },
    getServices: function () {
       this.informationService = new Service.AccessoryInformation();
