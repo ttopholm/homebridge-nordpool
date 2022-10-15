@@ -71,15 +71,15 @@ Hb_Nordpool.prototype = {
    },
    getDailyPrices: function() {
       prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
-         results.sort(function(a,b) {return a.value - b.value})
          this._day_prices = [];
          results.forEach(data => this._day_prices.push(Math.round(data.value * ((100+this.VAT)/100))))
+         results.sort(function(a,b) {return a.value - b.value})
          this._maxHourPrice = new Date(results.at(-1).date).getHours()
          this._minHourPrice = new Date(results.at(0).date).getHours()
       })     
    },
    getCurrentPrice: function() {
-      const price = this._day_prices[new Date().getHours()]
+      const price = this._day_prices[parseInt(new Date().getHours())]
       this._currentPrice = price
       if (this.lightSensorService) {
          this.lightSensorService.setCharacteristic(Characteristic.CurrentAmbientLightLevel, price);
