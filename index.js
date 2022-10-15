@@ -27,9 +27,7 @@ function Hb_Nordpool(log, config) {
    this._minHourPrice = 0;
    this._day_prices = [];
    
-   //Get the prices first
-   this.getDailyPrices(Date.now());
-   this.getCurrentPrice();
+
    
 
    const hourlyJob = schedule('0 1-23  * * * * ', () => {
@@ -123,6 +121,10 @@ Hb_Nordpool.prototype = {
         .getCharacteristic(Characteristic.OccupancyDetected)
         .onGet(this.getOccupancyHighState.bind(this));
       */
+
+      //Get the prices first
+      this.getDailyPrices(Date.now());
+      this.getCurrentPrice();
       return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
    }
 };
