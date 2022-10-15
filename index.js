@@ -36,8 +36,9 @@ function Hb_Nordpool(log, config) {
    });
    
    const dailyJob = schedule('0 0 * * *', () => {
-      this.getDailyPrices()
-      this.getCurrentPrice()
+      this.getDailyPrices(Date.now()).then(() => {
+         this.getCurrentPrice();
+      });
    });
 
 
@@ -68,13 +69,16 @@ Hb_Nordpool.prototype = {
       callback(); // success
    },
    getDailyPrices: function() {
-      prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
-         this._day_prices = [];
-         results.forEach(data => this._day_prices.push(Math.round(data.value * ((100+this.VAT)/100))))
-         results.sort(function(a,b) {return a.value - b.value})
-         this._maxHourPrice = new Date(results.at(-1).date).getHours()
-         this._minHourPrice = new Date(results.at(0).date).getHours()
-      })     
+      return new Promise((resolve, reject) => {
+         prices.hourly({area:this.area, currency:this.currency, date: Date.now()}).then(results => {
+            this._day_prices = [];
+            results.forEach(data => this._day_prices.push(Math.round(data.value * ((100+this.VAT)/100))))
+            results.sort(function(a,b) {return a.value - b.value})
+            this._maxHourPrice = new Date(results.at(-1).date).getHours()
+            this._minHourPrice = new Date(results.at(0).date).getHours()
+            resolve()
+         })    
+      }) 
    },
    getCurrentPrice: function() {
       const price = this._day_prices[parseInt(new Date().getHours())]
@@ -123,8 +127,10 @@ Hb_Nordpool.prototype = {
       */
 
       //Get the prices first
-      this.getDailyPrices(Date.now());
-      this.getCurrentPrice();
+      this.getDailyPrices(Date.now()).then(() => {
+         this.getCurrentPrice();
+      });
+      
       return [this.informationService, this.lightSensorService, this.occupancyServiceLow, this.occupancyServiceHigh];
    }
 };
