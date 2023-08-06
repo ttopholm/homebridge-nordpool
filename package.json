@@ -22,7 +22,7 @@
     "nordpool": "^4.0.0",
     "node-cron": "^3.0.2"
   },
-  "homepage": "https://github.com/ttopholm/homebridge-nordpoolgit#readme",
+  "homepage": "https://github.com/ttopholm/homebridge-nordpool.git#readme",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
