@@ -27,20 +27,23 @@ function Hb_Nordpool(log, config) {
    this._minHourPrice = 0;
    this._day_prices = [];
    
-
-   
-
    const hourlyJob = schedule('0 1-23  * * * * ', () => {
-      this.getCurrentPrice()
-
+      // delay 10s because homebridge systems clock may be out of sync 
+      // and pull previous hour data
+      setTimeout(() => {
+         this.getCurrentPrice();
+      }, 10000);
    });
    
    const dailyJob = schedule('0 0 * * *', () => {
       this.getDailyPrices(Date.now()).then(() => {
-         this.getCurrentPrice();
+         // delay 10s because homebridge systems clock may be out of sync 
+         // and pull previous hour data
+         setTimeout(() => {
+            this.getCurrentPrice();
+         }, 10000);
       });
    });
-
 
 }
 
@@ -88,7 +91,6 @@ Hb_Nordpool.prototype = {
       }
       
       const currentHour = new Date().getHours()
-
 
       if (currentHour == this._minHourPrice && this.occupancyServiceLow && this.occupancyServiceHigh) {
          this.occupancyServiceLow.getCharacteristic(Characteristic.OccupancyDetected).updateValue(Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
